@@ -1,8 +1,10 @@
 
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Celsius from "./components/Celsius"
 import Fahrenheit from "./components/Fahrenheit"
+import ProgrammerForm from "./components/ProgrammerForm"
+import ProgrammerList from "./components/ProgrammerList"
 
 function App() {
 
@@ -26,11 +28,37 @@ function App() {
     setScale("c")
   }
 
+  //////////////////////////////////////////////////////////////
+  // setting up our programmers state that can be accessed by both our List and Form
+  const [programmers, setProgrammers] = useState([
+    {id: 1, username: "user170", language: "Java"}
+  ])
+
+  // function to add programmer to the list, accessed from inside the Form onSubmit
+  const addProgrammer = (programmer) => {
+    setProgrammers([...programmers, programmer])
+  }
+
+  // useEffect (() => {
+  //   console.log(programmers)
+  // }, [programmers])
+
   return (
     <>
       <h1>4A - Lifting State</h1>
-      <Fahrenheit temperature={temperature} handleTemperatureChange={handleFahrenheit} scale={scale}/>
-      <Celsius temperature={temperature} handleTemperatureChange={handleCelsius} scale={scale}/>
+      <Fahrenheit 
+        temperature={temperature} 
+        handleTemperatureChange={handleFahrenheit} 
+        scale={scale}
+      />
+      <Celsius 
+        temperature={temperature} 
+        handleTemperatureChange={handleCelsius} 
+        scale={scale}
+      />
+      <ProgrammerForm addProgrammer={addProgrammer}/>
+      {/* passing programmers as props to display them in their own component */}
+      <ProgrammerList programmers={programmers}/>
     </>
   )
 }
